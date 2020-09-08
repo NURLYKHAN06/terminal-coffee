@@ -1,0 +1,21 @@
+express
+mongo
+
+styled-components
+context
+
+
+register
+login
+
+
+Types of products is came from Client:
+type,name,price
+
+User:
+My orders: []
+My balance: 2000
+Add balance
+
+
+History orders: [] sort by money
