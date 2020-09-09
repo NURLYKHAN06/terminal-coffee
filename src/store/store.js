@@ -5,11 +5,9 @@ import { products } from "./data.products";
 export const INITIAL_STATE = {
   products,
   processOrders: [],
-  place: ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-  currentOrder: {
-    coffees: null,
-    additional: null,
-  },
+  places: new Array(8).fill(0).map((item, index) => ({ id: ++index, owner: null })), // [{id: 1, isBusy: false}]
+  orderId: 1,
+  currentPlace: null,
 };
 
 const store = React.createContext();

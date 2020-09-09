@@ -1,14 +1,22 @@
 import React, { useContext, useState } from "react";
+import styled from "styled-components";
 import { store } from "../store/store";
 import { ProductView } from "./ProductView";
-import styled from "styled-components";
+import { changeQuantity } from "../store/actions";
+import { Places } from "./Places";
 
 export function Coffees() {
+  const [isTakeAway, setIsTakeAway] = useState(1); // 1 is take away
   const { state, dispatch } = useContext(store);
   const { coffees, additional } = state.products;
 
-  const changeQuantity = (type, title, step) => {
-    console.log(4);
+  const onChangeQuantity = (payload) => {
+    changeQuantity({ dispatch, payload });
+  };
+  const onOrder = () => {
+    if (isTakeAway || (!isTakeAway && state.currentPlace)) {
+      console.log("a");
+    }
   };
 
   return (
@@ -21,9 +29,17 @@ export function Coffees() {
             <ProductView {...newProps} />
 
             <div>
-              <button onClick={() => changeQuantity("coffee", title, 1)}>up</button>
+              <button
+                onClick={() => onChangeQuantity({ key: "coffees", title, step: 1 })}
+              >
+                up
+              </button>
               <p>{quantity}</p>
-              <button onClick={() => changeQuantity("coffee", title, -1)}>down</button>
+              <button
+                onClick={() => onChangeQuantity({ key: "coffees", title, step: -1 })}
+              >
+                down
+              </button>
             </div>
           </Red>
         );
@@ -37,15 +53,33 @@ export function Coffees() {
             <ProductView {...newProps} />
 
             <div>
-              <button onClick={() => changeQuantity("additional", title, 1)}>up</button>
+              <button
+                onClick={() => onChangeQuantity({ key: "additional", title, step: 1 })}
+              >
+                up
+              </button>
               <p>{quantity}</p>
-              <button onClick={() => changeQuantity("additional", title, -1)}>
+              <button
+                onClick={() => onChangeQuantity({ key: "additional", title, step: -1 })}
+              >
                 down
               </button>
             </div>
           </Red>
         );
       })}
+
+      <select
+        value={isTakeAway}
+        onChange={({ target: { value } }) => setIsTakeAway(+value)}
+      >
+        <option value={1}>На вынос</option>
+        <option value={0}>Здесь</option>
+      </select>
+
+      {!isTakeAway && <Places />}
+
+      <button onClick={onOrder}>Заказать</button>
     </div>
   );
 }
