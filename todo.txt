@@ -1,8 +1,9 @@
 
 styled-components
 context
+Suspense
 
-
+react.test
 
 
 User:
@@ -12,3 +13,6 @@ Add balance
 
 
 time preparing
+and bonus
+
+limit places
