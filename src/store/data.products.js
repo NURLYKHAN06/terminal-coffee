@@ -3,7 +3,7 @@ export const products = {
     {
       title: "Americano 0.5",
       price: 350,
-      timePrepare: 2,
+      timePrepare: 1,
       quantity: 0,
     },
     {
@@ -30,16 +30,19 @@ export const products = {
       title: "Сахар",
       price: 0,
       quantity: 0,
+      timePrepare: 0,
     },
     {
       title: "Пончик",
       price: 700,
       quantity: 0,
+      timePrepare: 0,
     },
     {
       title: "Корица",
       price: 150,
       quantity: 0,
+      timePrepare: 0,
     },
   ],
 };

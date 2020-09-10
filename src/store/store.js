@@ -1,12 +1,15 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useRef } from "react";
 import { reducer } from "./reducer";
 import { products } from "./data.products";
+import { usePrevious } from "../lib/usePrevious";
+import { changeProcessOrder } from "./actions";
 
-export const INITIAL_STATE = {
+const INITIAL_STATE = {
   products,
   processOrders: [],
+  finishedOrders: [],
   places: new Array(8).fill(0).map((item, index) => ({ id: ++index, owner: null })), // [{id: 1, isBusy: false}]
-  orderId: 1,
+  orderId: 1, // next orderId
   currentPlace: null,
 };
 
@@ -15,10 +18,22 @@ const { Provider } = store;
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const prevState = usePrevious(state);
+
+  const watcher = () => {
+    const isInit = prevState;
+    if (!isInit) return;
+    if (state.processOrders.length > prevState.processOrders.length) {
+      changeProcessOrder({
+        dispatch,
+        payload: state.processOrders[state.processOrders.length - 1],
+      });
+    }
+  };
 
   // Subscribe to changes
   useEffect(() => {
-    console.log(state);
+    watcher();
   }, [state]);
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;

@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import { Header } from "./components/Header";
 import { store } from "./store/store";
 import { Coffees } from "./components/Coffees";
+import { TableOrders } from "./components/TableOrders";
 
 export function App() {
-  const { state, dispatch } = useContext(store);
   return (
     <div>
       <Header />
+      <TableOrders />
       <Coffees />
       {/* <AdditionalTable />
       <ServingVariants /> */}

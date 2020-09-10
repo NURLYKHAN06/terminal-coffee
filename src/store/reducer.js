@@ -1,4 +1,9 @@
-import { CHANGE_QUANTITY, CHANGE_PLACE } from "./action.types";
+import {
+  CHANGE_QUANTITY,
+  CHANGE_PLACE,
+  TO_ORDER,
+  CHANGE_PROCESS_ORDER,
+} from "./action.types";
 
 export const reducer = (state, action) => {
   const { payload, type } = action;
@@ -43,6 +48,52 @@ export const reducer = (state, action) => {
         ...state,
         places: newPlaces,
         currentPlace,
+      };
+    case TO_ORDER:
+      const newOrder = {
+        ...payload,
+        ...payload.total,
+        place: state.currentPlace,
+        remainingSeconds: payload.total.timePrepare * 60,
+      };
+
+      delete newOrder.total;
+
+      return {
+        ...state,
+        processOrders: [...state.processOrders, newOrder],
+        products: {
+          coffees: state.products.coffees.map((coffee) => ({ ...coffee, quantity: 0 })),
+          additional: state.products.additional.map((item) => ({ ...item, quantity: 0 })),
+        },
+        currentPlace: null,
+        orderId: state.orderId + 1,
+      };
+    case CHANGE_PROCESS_ORDER:
+      let processOrders = [...state.processOrders];
+      let finishedOrders = [...state.finishedOrders];
+
+      if (payload.done) {
+        finishedOrders.push(payload);
+        processOrders = processOrders.filter(
+          (order) => order.orderId !== payload.orderId
+        );
+      } else {
+        processOrders = state.processOrders.map((order) => {
+          return {
+            ...order,
+            remainingSeconds:
+              order.orderId === payload.orderId
+                ? order.remainingSeconds - 1
+                : order.remainingSeconds,
+          };
+        });
+      }
+
+      return {
+        ...state,
+        processOrders,
+        finishedOrders,
       };
     default:
       return state;
