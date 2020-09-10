@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef } from "react";
+import React, { useReducer, useEffect } from "react";
 import { reducer } from "./reducer";
 import { products } from "./data.products";
 import { usePrevious } from "../lib/usePrevious";

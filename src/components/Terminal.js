@@ -5,7 +5,7 @@ import { Places } from "./Places";
 import { ConfirmOrder } from "./ConfirmOrder";
 import { Products } from "./Products";
 
-export function Coffees() {
+export function Terminal() {
   const [isTakeAway, setIsTakeAway] = useState(1); // 1 is take away
   const { state, dispatch } = useContext(store);
   const { coffees, additional } = state.products;
@@ -28,11 +28,16 @@ export function Coffees() {
     <div>
       {!confirmData && (
         <>
-          <h3>Кофе</h3>
-          <Products type="coffees" data={coffees} onChangeQuantity={onChangeQuantity} />
-          <h3>Дополнительно</h3>
+          <Products
+            type="coffees"
+            title="Кофе"
+            data={coffees}
+            onChangeQuantity={onChangeQuantity}
+          />
+
           <Products
             type="additional"
+            title="Дополнительно"
             data={additional}
             onChangeQuantity={onChangeQuantity}
           />
