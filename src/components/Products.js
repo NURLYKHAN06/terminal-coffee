@@ -1,38 +1,57 @@
 import React from "react";
 import styled from "styled-components";
 import { ProductView } from "./ProductView";
-import { EmblaCarousel } from "./EmblaCarousel";
+import { Button, Controls } from "../lib/styles";
 
 export function Products({ data, title, type, onChangeQuantity }) {
   return (
     <div>
-      <h3>{title}</h3>
-      <EmblaCarousel>
-        {data.map(({ title, price, timePrepare, quantity }) => {
-          const newProps = { title, price, timePrepare };
+      <h2>{title}</h2>
+      <ProductsWrap>
+        {data.map(({ title, price, timePrepare, quantity, imgSrc }) => {
+          const newProps = { title, price, timePrepare, imgSrc };
           return (
-            <Red key={title}>
+            <ProductWrap key={title}>
               <ProductView {...newProps} />
 
-              <div>
-                <button onClick={() => onChangeQuantity({ key: type, title, step: 1 })}>
-                  up
-                </button>
+              <Controls center>
+                <Button
+                  link
+                  onClick={() => onChangeQuantity({ key: type, title, step: -1 })}
+                >
+                  &#10094;
+                </Button>
                 <p>{quantity}</p>
-                <button onClick={() => onChangeQuantity({ key: type, title, step: -1 })}>
-                  down
-                </button>
-              </div>
-            </Red>
+                <Button
+                  link
+                  onClick={() => onChangeQuantity({ key: type, title, step: 1 })}
+                >
+                  &#10095;
+                </Button>
+              </Controls>
+            </ProductWrap>
           );
         })}
-      </EmblaCarousel>
+      </ProductsWrap>
     </div>
   );
 }
 
-const Red = styled.div`
-  border: 1px solid red;
+const ProductWrap = styled.div`
   padding: 10px;
   margin: 10px 0;
+  width: 240px;
+  margin: 10px;
+  font-size: 18px;
+  border-radius: 3px;
+  border: 1px solid grey;
+
+  &:hover {
+    box-shadow: 1px 2px 5px #afaaaab8;
+  }
+`;
+
+const ProductsWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;

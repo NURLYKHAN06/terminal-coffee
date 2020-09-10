@@ -4,6 +4,8 @@ import { changeQuantity } from "../store/actions";
 import { Places } from "./Places";
 import { ConfirmOrder } from "./ConfirmOrder";
 import { Products } from "./Products";
+import { Button, Controls } from "../lib/styles";
+import styled from "styled-components";
 
 export function Terminal() {
   const [isTakeAway, setIsTakeAway] = useState(1); // 1 is take away
@@ -16,7 +18,7 @@ export function Terminal() {
   };
   const onOrder = () => {
     const isFill = isTakeAway || (!isTakeAway && state.currentPlace);
-    if (!isFill) return;
+    if (!isFill) return alert("Выберите место");
     const orderedCoffees = coffees.filter((coffee) => coffee.quantity);
     const orderedAdditional = additional.filter((item) => item.quantity);
     if (!orderedCoffees.length) return alert("Закажите кофе");
@@ -25,7 +27,7 @@ export function Terminal() {
   };
 
   return (
-    <div>
+    <TerminalWrap>
       {!confirmData && (
         <>
           <Products
@@ -42,20 +44,36 @@ export function Terminal() {
             onChangeQuantity={onChangeQuantity}
           />
 
-          <select
-            value={isTakeAway}
-            onChange={({ target: { value } }) => setIsTakeAway(+value)}
-          >
-            <option value={1}>На вынос</option>
-            <option value={0}>Здесь</option>
-          </select>
+          <Controls>
+            <Select
+              value={isTakeAway}
+              onChange={({ target: { value } }) => setIsTakeAway(+value)}
+            >
+              <option value={1}>На вынос</option>
+              <option value={0}>Здесь</option>
+            </Select>
+            <Button onClick={onOrder}>Заказать</Button>
+          </Controls>
 
           {!isTakeAway && <Places />}
-          <button onClick={onOrder}>Заказать</button>
         </>
       )}
 
       {confirmData && <ConfirmOrder {...confirmData} setConfirmData={setConfirmData} />}
-    </div>
+    </TerminalWrap>
   );
 }
+
+const TerminalWrap = styled.div`
+  padding: 10px 15px;
+
+  h2 {
+    padding: 5px 10px;
+  }
+`;
+
+const Select = styled.select`
+  display: inline-block;
+  padding: 6px 5px;
+  border-radius: 5px;
+`;

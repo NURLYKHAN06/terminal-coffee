@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   products,
   processOrders: [],
   finishedOrders: [],
-  places: new Array(8).fill(0).map((item, index) => ({ id: ++index, owner: null })), // [{id: 1, isBusy: false}]
+  places: new Array(9).fill(0).map((item, index) => ({ id: ++index, owner: null })), // [{id: 1, isBusy: false}]
   orderId: 1, // next orderId
   currentPlace: null,
 };

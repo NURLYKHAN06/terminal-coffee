@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { ProductView } from "./ProductView";
 import { store } from "../store/store";
 import { toOrder } from "../store/actions";
+import { Button, Controls } from "../lib/styles";
+import styled from "styled-components";
 
 export function ConfirmOrder({ orderedCoffees, orderedAdditional, setConfirmData }) {
   const { state, dispatch } = useContext(store);
@@ -29,24 +31,31 @@ export function ConfirmOrder({ orderedCoffees, orderedAdditional, setConfirmData
   };
 
   return (
-    <div>
-      <h1>Правильно?</h1>
+    <ConfirmBox>
+      <h2>Правильно?</h2>
       {state.currentPlace ? <p>Место: {state.currentPlace}</p> : <p>На вынос</p>}
-      {orderedCoffees.map(({ title, price, timePrepare, quantity }) => {
-        const newProps = { title, price, timePrepare, quantity };
+      {orderedCoffees.map(({ title, price, quantity }) => {
+        const newProps = { title, price, quantity };
         return <ProductView key={title} {...newProps} />;
       })}
 
-      {orderedAdditional.map(({ title, price, quantity, timePrepare }) => {
-        const newProps = { title, price, quantity, timePrepare };
+      {orderedAdditional.map(({ title, price, quantity }) => {
+        const newProps = { title, price, quantity };
         return <ProductView key={title} {...newProps} />;
       })}
 
       <p>Время приготовления: {total.timePrepare} минут</p>
       <p>Итого: {total.price} тенге</p>
-
-      <button onClick={onConfirm}>Подвердить</button>
-      <button onClick={() => setConfirmData(null)}>Изменить</button>
-    </div>
+      <Controls marginTop>
+        <Button onClick={onConfirm}>Подвердить</Button>
+        <Button onClick={() => setConfirmData(null)}>Изменить</Button>
+      </Controls>
+    </ConfirmBox>
   );
 }
+
+const ConfirmBox = styled.div`
+  & > * {
+    padding: 3px 10px;
+  }
+`;
